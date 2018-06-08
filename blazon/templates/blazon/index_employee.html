@@ -1,0 +1,60 @@
+
+{% block body %}
+
+<div class="row">
+    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 margin-bottom-10">
+        <div class="dashboard-stat blue-madison">
+            <div class="visual">
+                <i class="fa fa-briefcase fa-icon-medium"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                     {{num_projects}}
+                </div>
+                <div class="desc">
+                     My projects
+                </div>
+            </div>
+            <a class="more" href="{% url 'blazon:projects' 'all' %}">
+            View more <i class="m-icon-swapright m-icon-white"></i>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        <div class="dashboard-stat red-intense">
+            <div class="visual">
+                <i class="fa fa-shopping-cart"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                    {{ users_statusreports }}
+                </div>
+                <div class="desc">
+                     Total logged Reports
+                </div>
+            </div>
+            <a class="more" href="#">
+            View more <i class="m-icon-swapright m-icon-white"></i>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        <div class="dashboard-stat green-haze">
+            <div class="visual">
+                <i class="fa fa-group fa-icon-medium"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                     $670.54
+                </div>
+                <div class="desc">
+                     Average Orders
+                </div>
+            </div>
+            <a class="more" href="#">
+            View more <i class="m-icon-swapright m-icon-white"></i>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'blazon/base.html' %}
+{% block title %}All statusreports{% endblock %}
+{% block statusreports_active %}active{% endblock %}
+
+{% block body %}
+<div class="page-content">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                <li role="presentation" {% if filter_by == 'all' %}class="active"{% endif %}><a href="{% url 'blazon:statusreports' 'all' %}">View All</a></li>
+                <li role="presentation" {% if filter_by == 'favorites' %}class="active"{% endif %}><a href="{% url 'blazon:statusreports' 'favorites' %}">Favorites</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Project</th>
+                                <th>statusreport Title</th>
+                                <th>description</th>
+                                <th>Report date</th>
+                                <th>duration:From</th>
+                                <th>Duration:To</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for statusreport in statusreport_list %}
+                                <tr>
+                                    <td>{{ statusreport.projectname }}</td>
+                                    <td>{{ statusreport.statusreport_title }}</td>
+                                    <td>{{ statusreport.report }}</td>
+                                    <td>{{ statusreport.reportdate }}</td>
+                                    <td>{{ statusreport.timedurfrom }}</td>
+                                    <td>{{ statusreport.timedurto }}</td>
+
+                                    
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

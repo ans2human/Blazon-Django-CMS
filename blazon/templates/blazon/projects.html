@@ -1,0 +1,119 @@
+{% extends 'blazon/base.html' %}
+{% block body%}
+{% if user.is_superuser %}
+<div class="page-content">
+        <div class="row">
+                <div class="col-sm-12">
+                   
+                </div>
+                {% if projects %}
+                    {% for project in allproject %}
+                        <div class="col-sm-4 col-lg-2">
+                            <div class="thumbnail">
+                                <a href="{% url 'blazon:detail' project.id %}">
+                                    <img src="{{ project.document.url }}" class="img-responsive">
+                                </a>
+                                <div class="caption">
+                                    <h2>{{ project.project_title }}</h2>
+                                    <h4>{{ project.description }}</h4>
+        
+                                    <!-- View Details -->
+                                    <a href="{% url 'blazon:detail' project.id %}" class="btn btn-primary btn-sm" role="button">View Details</a>
+        
+                                    <!-- Delete project -->
+                                    <form action="{% url 'blazon:delete_project' project.id %}" method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="project_id" value="{{ project.id }}" />
+                                        <button type="submit" class="btn btn-default btn-sm">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </button>
+                                    </form>
+                                    <br>
+                                    <a href="{% url 'blazon:create_statusreport' project.id %}" class="btn btn-default" role="button">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </a>
+                                    
+                                    <!-- Favorite project -->
+                                    <a href="{% url 'blazon:favorite_project' project.id %}" class="btn btn-default btn-sm btn-favorite" role="button">
+                                        <span class="glyphicon glyphicon-star {% if project.is_favorite %}active{% endif %}"></span>
+                                    </a>
+        
+                                </div>
+                            </div>
+                        </div>
+                        {% cycle '' '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
+                    {% endfor %}
+                {% else %}
+                    <div class="col-sm-12">
+                        <br>
+                        <a href="{% url 'blazon:create_project' %}">
+                            <button type="button" class="btn btn-success">
+                                <span class="glyphicon glyphicon-plus"></span>&nbsp; Add Project
+                            </button>
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+    
+</div>
+{% else %}
+
+<div class="page-content">
+    <div class="row">
+            <div class="col-sm-12">
+               
+            </div>
+            {% if projects %}
+                {% for project in projects %}
+                    <div class="col-sm-4 col-lg-2">
+                        <div class="thumbnail">
+                            <a href="{% url 'blazon:detail' project.id %}">
+                                <img src="{{ project.document.url }}" class="img-responsive">
+                            </a>
+                            <div class="caption">
+                                <h2>{{ project.project_title }}</h2>
+                                <h4>{{ project.description }}</h4>
+    
+                                <!-- View Details -->
+                                <a href="{% url 'blazon:detail' project.id %}" class="btn btn-primary btn-sm" role="button">View Details</a>
+    
+                                <!-- Delete project -->
+                                <form action="{% url 'blazon:delete_project' project.id %}" method="post" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="project_id" value="{{ project.id }}" />
+                                    <button type="submit" class="btn btn-default btn-sm">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                </form>
+                                <br>
+                                <a href="{% url 'blazon:create_statusreport' project.id %}" class="btn btn-default" role="button">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </a>
+                                
+                                <!-- Favorite project -->
+                                <a href="{% url 'blazon:favorite_project' project.id %}" class="btn btn-default btn-sm btn-favorite" role="button">
+                                    <span class="glyphicon glyphicon-star {% if project.is_favorite %}active{% endif %}"></span>
+                                </a>
+    
+                            </div>
+                        </div>
+                    </div>
+                    {% cycle '' '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
+                {% endfor %}
+            {% else %}
+                <div class="col-sm-12">
+                    <br>
+                    <a href="{% url 'blazon:create_project' %}">
+                        <button type="button" class="btn btn-success">
+                            <span class="glyphicon glyphicon-plus"></span>&nbsp; Add Project
+                        </button>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+
+</div>
+
+{% endif %}  
+
+  {% endblock %}

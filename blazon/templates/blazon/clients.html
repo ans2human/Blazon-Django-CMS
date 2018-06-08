@@ -1,0 +1,14 @@
+{% extends 'blazon/base.html' %}
+{% block body %}
+<div class="page-content">
+  <h1>clients!</h1>
+
+<ul>
+    {% for client in clients  %}
+      <li class="client"><h1>{{ client.personaldetail }}</h1></li>
+    {% endfor %}
+  </ul>
+   
+</div>
+
+{% endblock %}

@@ -1,0 +1,95 @@
+
+<div class="page-sidebar-wrapper"> 
+
+    <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing --> 
+    <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+    <div class="page-sidebar navbar-collapse collapse"> 
+      <!-- BEGIN SIDEBAR MENU -->
+      <ul class="page-sidebar-menu" data-auto-scroll="true" data-slide-speed="200">
+        <!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
+        <li class="sidebar-toggler-wrapper"> 
+          <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+          <div class="sidebar-toggler"> </div>
+          <!-- END SIDEBAR TOGGLER BUTTON --> 
+        </li>
+        <!-- DOC: To remove the search box from the sidebar you just need to completely remove the below "sidebar-search-wrapper" LI element -->
+        <li class="sidebar-search-wrapper hidden-xs"> 
+          <!-- BEGIN RESPONSIVE QUICK SEARCH FORM --> 
+          <!-- DOC: Apply "sidebar-search-bordered" class the below search form to have bordered search box --> 
+          <!-- DOC: Apply "sidebar-search-bordered sidebar-search-solid" class the below search form to have bordered & solid search box -->
+          <form class="sidebar-search" action="extra_search.html" method="GET">
+            <a href="javascript:;" class="remove"> <i class="icon-close"></i> </a>
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search...">
+              <span class="input-group-btn"> <a href="javascript:;" class="btn submit"><i class="icon-magnifier"></i></a> </span> </div>
+          </form>
+          <!-- END RESPONSIVE QUICK SEARCH FORM --> 
+        </li>
+        <li class="start active "> <a href="{% url 'blazon:index' %}"> <i class="icon-home"></i> <span class="title">Dashboard</span> <span class="selected"></span> </a> </li>
+
+        <li > <a href="{% url 'blazon:projects' 'all' %}"> <i class="icon-rocket"></i> <span class="title">My Projects</span> <span class="arrow "></span> </a>
+          
+
+          
+        </li>
+        <!-- BEGIN FRONTEND THEME LINKS -->
+        <li> <a href="javascript:;"> <i class="icon-star"></i> <span class="title">My Reports</span> <span class="arrow"> </span> </a>
+          <ul class="sub-menu">
+              <li> <a href="{% url 'blazon:statusreports' 'all' %}"> My Statureport list</a> </li>
+              <li> <a href="{% url 'blazon:projects' 'all' %}"> Submit Statureport </a> </li>
+
+          </ul>
+        </li>
+        <!-- END FRONTEND THEME LINKS -->
+        
+        <li> <a href="javascript:;"> <i class="icon-puzzle"></i> <span class="title">Profile</span> <span class="arrow "></span> </a>
+          <ul class="sub-menu">
+            <!-- <li> <a href="{% url 'blazon:clients' 'all' %}">See clients</a> </li> -->
+            
+          </ul>
+        </li>
+        <li> <a href="javascript:;"> <i class="icon-power"></i> <span class="title">Logout</span> <span class="arrow "></span> </a>
+          <ul class="sub-menu">
+           
+            <!-- <li> <a href="{% url 'blazon:employees' 'all' %}">See employees</a> </li> -->
+          </ul>
+        </li>
+        
+        <li> <a href="javascript:;"> <i class="icon-envelope-open"></i> <span class="title">Invoicing</span> <span class="arrow "></span> </a>
+          <ul class="sub-menu">
+            <li> <a href="email_newsletter.html"> Responsive Newsletter<br>
+              Email Template</a> </li>
+            <li> <a href="email_system.html"> Responsive System<br>
+              Email Template</a> </li>
+          </ul>
+        </li>
+       
+        
+        <li> <a href="javascript:;"> <i class="icon-folder"></i> <span class="title">Sales</span> <span class="arrow "></span> </a>
+          <ul class="sub-menu">
+            <li> <a href="javascript:;"> <i class="icon-settings"></i> Item 1 <span class="arrow"></span> </a>
+              <ul class="sub-menu">
+                <li> <a href="javascript:;"> <i class="icon-user"></i> Sample Link 1 <span class="arrow"></span> </a>
+                  <ul class="sub-menu">
+                    <li> <a href="#"><i class="icon-power"></i> Sample Link 1</a> </li>
+                    <li> <a href="#"><i class="icon-paper-plane"></i> Sample Link 1</a> </li>
+                    <li> <a href="#"><i class="icon-star"></i> Sample Link 1</a> </li>
+                  </ul>
+                </li>
+                <li> <a href="#"><i class="icon-camera"></i> Sample Link 1</a> </li>
+                <li> <a href="#"><i class="icon-link"></i> Sample Link 2</a> </li>
+                <li> <a href="#"><i class="icon-pointer"></i> Sample Link 3</a> </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        
+        <li> <a href="javascript:;"> <i class="icon-pointer"></i> <span class="title">Maps</span> <span class="arrow "></span> </a>
+          <ul class="sub-menu">
+            <li> <a href="#.html"> Google Maps</a> </li>
+            <li> <a href="#.html"> Vector Maps</a> </li>
+          </ul>
+        </li>
+      </ul>
+      </div>
+  </div>

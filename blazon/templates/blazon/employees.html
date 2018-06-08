@@ -1,0 +1,24 @@
+{% extends 'blazon/base.html' %}
+{% block body%}
+<div class="page-content">
+<ul>
+    {% for employee in employees  %}
+      <li class="employee"><h1>{{ employee.PersonalDetail }}</h1></li>
+      <h4>{{ employee.report }}</h4>
+          <h4>{{ employee.joiningdate }}</h4>
+          <h4>{{ employee.designation }}</h4>
+          <h4>{{ employee.salary }}</h4>
+
+          <!-- Delete project -->
+          <form action="{% url 'blazon:delete_employee' employee.id %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <input type="hidden" name="employee_id" value="{{ employee.id }}" />
+            <button type="submit" class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-trash"></span>
+            </button>
+        </form>
+			
+    {% endfor %}
+  </ul>
+</div>
+  {% endblock %}

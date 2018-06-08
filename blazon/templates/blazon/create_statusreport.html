@@ -1,0 +1,63 @@
+{% extends 'blazon/base.html' %}
+{% block title %}Add Report{% endblock %}
+{% block create_statusreport_active %}active{% endblock %}
+
+{% block body %}
+<div class="page-content">
+<div class="container-fluid">
+
+    <div class="row">
+
+        <!-- Left Album document Info -->
+        <div class="col-sm-4 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                        <a href="{% url 'blazon:detail' project.id %}">
+                            {% if project.document %}
+                                <img src="{{ project.document.url }}" class="img-responsive">
+                            {% else %}
+                                <h3>No image to display</h3>
+                            {% endif %}
+                        </a>
+                    <h1>{{ project.project_title }}</h1>
+                    <h2>{{ project.description }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right statusreport Info -->
+        <div class="col-sm-8 col-md-9">
+
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                <li role="presentation"><a href="{% url 'blazon:detail' project.id %}">View All</a></li>
+                <li role="presentation" class="active"><a href="{% url 'blazon:create_statusreport' project.id %}">Add New statusreport</a></li>
+            </ul>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3>Add a New statusreport</h3>
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+                    <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="project" value="{{ project }}">
+                        {% include 'blazon/form_template.html' %}
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</div>
+
+{% endblock %}
+

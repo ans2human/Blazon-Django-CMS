@@ -1,0 +1,92 @@
+{% extends 'blazon/base.html' %}
+{% block title %}{{ project }}{% endblock %}
+{% block projects_active %}active{% endblock %}
+
+{% block body %}
+<div class="page-content">
+    <div class="row">
+
+        <!-- Left Album Info -->
+        <div class="col-sm-4 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a href="{% url 'blazon:detail' project.id %}">
+                        {% if project.document %}
+                            <img src="{{ project.document.url }}" class="img-responsive">
+                        {% else %}
+                            <h3>No image to display</h3>
+                        {% endif %}
+                    </a>
+                    <h1>{{ project.project_title }}</h1>
+                    <h2>{{ project.description }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right statusreport Info -->
+        <div class="col-sm-8 col-md-9">
+
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                <li role="presentation" class="active"><a href="{% url 'blazon:detail' project.id %}">View All</a></li>
+                <li role="presentation"><a href="{% url 'blazon:create_statusreport' project.id %}">Add New statusreport</a></li>
+            </ul>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <h3>All statusreport</h3>
+
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>report</th>
+                            <th>Duration:From</th>
+                            <th>Duration:To</th>
+                            <th>Report date</th>
+                            <th>delete</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for statusreport in project.statusreport_set.all %}
+                            <tr>
+                                <td>{{ statusreport.statusreport_title }}</td>
+                                <td>{{ statusreport.report }}</td>
+                                <td>{{ statusreport.timedurfrom }}</td>
+                                <td>{{ statusreport.timedurto }}</td>
+                                <td>{{ statusreport.reportdate }}</td>
+
+                               
+                                <td>
+                                    <form action="{% url 'blazon:delete_statusreport' project.id statusreport.id %}" method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="statusreport_id" value="{{ statusreport.id }}" />
+                                        <button type="submit" class="btn btn-danger btn-xs">
+                                            <span class="glyphicon glyphicon-remove"></span>&nbsp; Delete
+                                        </button>
+                                    </form>
+    
+                                </td>
+                                <!-- <td>
+                                    <a href="{% url 'blazon:favorite' statusreport.id %}" class="btn-favorite"><span class="glyphicon glyphicon-star {% if statusreport.is_favorite %}active{% endif %}"></span></a>
+                                    
+                                </td> -->
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

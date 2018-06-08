@@ -1,0 +1,253 @@
+{% extends 'blazon/base.html' %}
+
+{% block body %}
+<div class="page-content">
+    
+    
+
+
+     
+    <div class="row">
+        <div class="col-md-12"> 
+          <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+          <h3 class="page-title"> Dashboard</h3>
+          <ul class="page-breadcrumb breadcrumb">
+            <li> <i class="fa fa-home"></i> <a href="/">Home</a>  </li>
+              <div id="dashboard-report-range" class="dashboard-date-range tooltips" data-placement="top" data-original-title="Change dashboard date range"> <i class="icon-calendar"></i> <span></span> <i class="fa fa-angle-down"></i> 
+            </div>
+            
+          </ul>
+       
+      {% if user.is_superuser %}
+      <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+          <div class="dashboard-stat blue-madison">
+            <div class="visual"> <i class="fa fa-comments"></i> </div>
+            <div class="details">
+              <div class="number">{{ numall_projects }}</div>
+              <div class="desc"> Projects </div>
+            </div>
+            <a class="more" href="{% url 'blazon:projects' 'all' %}"> View more <i class="m-icon-swapright m-icon-white"></i> </a> </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+          <div class="dashboard-stat red-intense">
+            <div class="visual"> <i class="fa fa-globe"></i> </div>
+            <div class="details">
+              <div class="number">{{ num_clients }}</div>
+              <div class="desc"> Clients </div>
+            </div>
+            <a class="more" href="{% url 'blazon:clients' 'all' %}"> View more <i class="m-icon-swapright m-icon-white"></i> </a> </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+          <div class="dashboard-stat green-haze">
+            <div class="visual"> <i class="fab fa-earlybirds"></i> </div>
+            <div class="details">
+              <div class="number">{{ num_employees }}</div>
+              <div class="desc">Employees</div>
+            </div>
+            <a class="more" href="{% url 'blazon:employees' 'all' %}"> View more <i class="m-icon-swapright m-icon-white"></i> </a> </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+          <div class="dashboard-stat purple-plum">
+            <div class="visual"> <i class="fa fa-bar-chart-o"></i> </div>
+            <div class="details">
+              <div class="number"> +89% </div>
+              <div class="desc"> Revenue </div>
+            </div>
+            <a class="more" href="#"> View more <i class="m-icon-swapright m-icon-white"></i> </a> </div>
+        </div>
+      </div>
+
+      
+
+
+
+      <div class="row ">
+        <div class="col-md-12 col-sm-12">
+          <div class="portlet box purple-wisteria">
+            <div class="portlet-title">
+              <div class="caption"> <i class="fa fa-user"></i>Employees </div>
+              <div class="actions"> <a href="javascript:;" class="btn btn-sm btn-default easy-pie-chart-reload"> <i class="fa fa-repeat"></i> Reload </a> </div>
+              
+            </div>
+            <div class="portlet-body">
+                {% for employee in employees  %}
+          
+              <strong>{{ employee }}</strong>
+           
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+            <div class="col-md-12 col-sm-12">
+              <div class="portlet box purple-wisteria">
+                <div class="portlet-title">
+                  <div class="caption"> <i class="fa fa-user"></i>clients</div>
+                  <div class="actions"> <a href="javascript:;" class="btn btn-sm btn-default easy-pie-chart-reload"> <i class="fa fa-repeat"></i> Reload </a> </div>
+                  
+                </div>
+                <div class="portlet-body">
+                    {% for client in clients  %}   
+
+        <strong>{{ client }}</strong>
+
+
+{% endfor %}
+                </div>
+              </div>
+            </div>
+        </div>  
+{% else %}
+{% include "blazon/index_employee.html" %}
+{% endif %}  
+
+{% if user.is_superuser %}
+    <div class="row">
+        <div class="col-sm-12">
+           
+        </div>
+        {% if projects %}
+            {% for project in all_projects %}
+                <div class="col-sm-4 col-lg-2">
+                    <div class="thumbnail">
+                        <a href="{% url 'blazon:detail' project.id %}">
+                            <img src="{{ project.document.url }}" class="img-responsive">
+                        </a>
+                        <div class="caption">
+                            <h2>{{ project.project_title }}</h2>
+                            <h4>{{ project.description }}</h4>
+
+                            <!-- View Details -->
+                            <a href="{% url 'blazon:detail' project.id %}" class="btn btn-primary btn-sm" role="button">View Details</a>
+
+                            <!-- Delete project -->
+                            <form action="{% url 'blazon:delete_project' project.id %}" method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="project_id" value="{{ project.id }}" />
+                                <button type="submit" class="btn btn-default btn-sm">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </button>
+                            </form>
+
+                            <!-- Favorite project -->
+                            <a href="{% url 'blazon:favorite_project' project.id %}" class="btn btn-default btn-sm btn-favorite" role="button">
+                                <span class="glyphicon glyphicon-star {% if project.is_favorite %}active{% endif %}"></span>
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+                {% cycle '' '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
+            {% endfor %}
+        {% else %}
+            <div class="col-sm-12">
+                <br>
+                <a href="{% url 'blazon:create_project' %}">
+                    <button type="button" class="btn btn-success">
+                        <span class="glyphicon glyphicon-plus"></span>&nbsp; Add Project
+                    </button>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+    {% else %}
+
+    {% if projects %}
+            {% for project in projects %}
+                <div class="col-sm-4 col-lg-2">
+                    <div class="thumbnail">
+                        <a href="{% url 'blazon:detail' project.id %}">
+                            <img src="{{ project.document.url }}" class="img-responsive">
+                        </a>
+                        <div class="caption">
+                            <h2>{{ project.project_title }}</h2>
+                            <h4>{{ project.description }}</h4>
+
+                            <!-- View Details -->
+                            <a href="{% url 'blazon:detail' project.id %}" class="btn btn-primary btn-sm" role="button">View Details</a>
+
+                            <!-- Delete project -->
+                            <form action="{% url 'blazon:delete_project' project.id %}" method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="project_id" value="{{ project.id }}" />
+                                <button type="submit" class="btn btn-default btn-sm">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </button>
+                            </form>
+
+                            <!-- Favorite project -->
+                            <a href="{% url 'blazon:favorite_project' project.id %}" class="btn btn-default btn-sm btn-favorite" role="button">
+                                <span class="glyphicon glyphicon-star {% if project.is_favorite %}active{% endif %}"></span>
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+                {% cycle '' '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
+            {% endfor %}
+        {% else %}
+            <div class="col-sm-12">
+                <br>
+                <a href="{% url 'blazon:create_project' %}">
+                    <button type="button" class="btn btn-success">
+                        <span class="glyphicon glyphicon-plus"></span>&nbsp; Add Project
+                    </button>
+                </a>
+            </div>
+        {% endif %}
+
+    {% endif %}
+    <!-- If user searches and there are statusreports -->
+    {% if statusreports %}
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>statusreports</h3>
+            </div>
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>statusreport Title</th>
+                                    <th>Artist</th>
+                                    <th>Audio File</th>
+                                    <th>Album</th>
+                                    <th>Favorite</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for statusreport in statusreports %}
+                                    <tr>
+                                        <td>{{ statusreport.statusreport_title }}</td>
+                                        <td>{{ statusreport.project.employeeid }}</td>
+                                        <td>
+                                            <a target="_blank" href="#">
+                                                <button type="button" class="btn btn-success btn-xs">
+                                                    <span class="glyphicon glyphicon-play"></span>&nbsp; Play
+                                                </button>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'blazon:detail' statusreport.project.id %}">
+                                                <img src="{{ statusreport.project.document.url }}" class="img-responsive" style="width: 20px; float: left; margin-right: 10px;" />
+                                            </a>
+                                            <a href="{% url 'blazon:detail' statusreport.project.id %}">{{ statusreport.project.project_title }}</a>
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'blazon:favorite' statusreport.id %}" class="btn-favorite"><span class="glyphicon glyphicon-star {% if statusreport.is_favorite %}active{% endif %}"></span></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    </div>
+</div>
+</div>
+{% endblock %}
