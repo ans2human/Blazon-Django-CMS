@@ -258,7 +258,11 @@
 <script src="{% static 'blazon/js/' %}global/plugins/jquery.cokie.min.js" type="text/javascript"></script> 
 <script src="{% static 'blazon/js/' %}global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script> 
 <script src="{% static 'blazon/js/' %}global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script> 
-<!-- END CORE PLUGINS --> 
+<!-- END 
+    url(r'^blazon/', include('blazon.urls')),
+    url(r'^', include('blazon.urls')),
+    url(r'^blazon/', include(project_resource.urls)),
+CORE PLUGINS --> 
 <!-- BEGIN PAGE LEVEL PLUGINS --> 
 
 <!-- IMPORTANT! fullcalendar depends on jquery-ui-1.10.3.custom.min.js for drag & drop support --> 
