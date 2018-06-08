@@ -10,9 +10,7 @@ project_resource = ProjectResource()
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^blazon/', include('blazon.urls')),
-    url(r'^', include('blazon.urls')),
-    url(r'^blazon/', include(project_resource.urls)),
+
 ]
 
 if settings.DEBUG:
