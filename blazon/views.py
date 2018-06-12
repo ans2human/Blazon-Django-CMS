@@ -202,7 +202,7 @@ def index(request):
         else:
             return render(request, 'blazon/index.html', {'projects': projects,
                                                         'all_projects': all_projects,
-                                                        'numall_project': numall_projects, 
+                                                        'numall_projects': numall_projects, 
                                                         'clients': clients,
                                                         'employees': employees,
                                                         'num_clients': num_clients,
