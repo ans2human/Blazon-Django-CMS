@@ -1,7 +1,4 @@
 Django==1.9.4
 django_countries
-
-git@github.com:ans2human/Django.git
-
-git remote set-url origin git@github.com:ans2human/Django.git
-git remote set-url origin git@github.com:ans2human/Django.git
+django-tastypie
+requests
