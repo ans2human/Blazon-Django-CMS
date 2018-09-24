@@ -38,7 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
+    'mailapp',
+    'social_django',
+    
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
@@ -53,7 +59,7 @@ MIDDLEWARE_CLASSES = [
 
 ROOT_URLCONF = 'Manand.urls'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 600 # set just 10000 seconds to test
+SESSION_COOKIE_AGE = 10000 # set just 10000 seconds to test
 SESSION_SAVE_EVERY_REQUEST = True
 
 
@@ -68,6 +74,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',  # <- social auth
+                'social_django.context_processors.login_redirect', # <- social auth
             ],
         },
     },
@@ -127,3 +135,52 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'anandanshuman95@gmail.com'
+EMAIL_HOST_PASSWORD = 'anshul1395#'
+
+
+
+AUTHENTICATION_BACKENDS = (
+ 'social_core.backends.open_id.OpenIdAuth',  # for Google authentication
+ 'social_core.backends.google.GoogleOpenId',  # for Google authentication
+ 'social_core.backends.google.GoogleOAuth2',  # for Google authentication
+ 'social_core.backends.github.GithubOAuth2',  # for Github authentication
+ 'social_core.backends.facebook.FacebookOAuth2',  # for Facebook authentication
+ 
+ 'django.contrib.auth.backends.ModelBackend',
+)
+
+LOGIN_URL = 'blazon:login'
+
+LOGIN_REDIRECT_URL = 'blazon:index'
+# SOCIAL_AUTH_REDIRECT_IS_HTTPS = False
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='1053556281561-ta7eju9qcc33e0etl9n59lv210qs1s6t.apps.googleusercontent.com'  #Paste CLient Key
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'wiNLhk8aEaKDA1qeJ3I6GvK-'
+
+SOCIAL_AUTH_GITHUB_KEY = '647b04bf316e71cf0d9f'
+SOCIAL_AUTH_GITHUB_SECRET = '979776de440f89c8f4c54ed9a76de9bc1fecea4d'
+
+
+
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+    'social_core.pipeline.social_auth.associate_by_email',
+)
+
+
+SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']

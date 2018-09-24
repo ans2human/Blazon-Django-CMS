@@ -1,0 +1,29 @@
+{% extends 'blazon/base.html' %}
+{% load crispy_forms_tags %}
+{% block body %}
+ <div class="page-content">
+   <!-- <form method="post">
+        {% csrf_token %} {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+    <br>
+</div> -->
+
+
+    <!-- Material form is just a materialize thing for django forms -->
+<div class="col s12 m8 offset-m2">
+
+        <h2 class="flow-text">Update your information</h2>
+          <form action="." method="POST" class="padding" novalidate>
+            {% csrf_token %} {{ noodle_form|crispy }}
+            <div class="divider"></div>
+            {{ formset.management_form }}
+                {{ formset|crispy }}
+            <button type="submit" class="btn btn-lg btn-success">Save</button>
+            <a href="#" onclick="window.history.back(); return false;" title="Cancel" class="btn btn-lg btn-primary">history</a>
+ 
+        </form>
+
+</div>
+ </div>
+{% endblock %}

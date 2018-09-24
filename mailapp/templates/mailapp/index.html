@@ -1,0 +1,60 @@
+{% extends 'blazon/base.html' %}
+
+{% block body %}
+
+<div class="page-content">
+
+<h1>{{ msgs }}</h1>
+<a href="{% url 'mailapp:mailpage' %}" class="btn btn-lg btn-success">Create mail</a>
+&nbsp;
+
+<a href="{% url 'mailapp:mail' %}" class="btn btn-lg btn-success">Send test mail</a>
+&nbsp;
+<a href="{% url 'mailapp:dynamicmail' %}" class="btn btn-lg btn-success">dynamic mail</a>
+<a href="{% url 'mailapp:create-template' %}" class="btn btn-lg btn-success">Add new Template</a>
+<a href="{% url 'mailapp:netspeedtest' %}" class="btn btn-lg btn-success">speedtest</a>
+
+<br>
+<br>
+{% for temps in  htmltemps %}
+<table class="table table-bordered">
+        <thead>
+
+          <tr>
+            <th>id</th>
+            <th>alias</th>
+            <th> code </th>
+
+            <th>Action</th>
+
+          </tr>
+
+        </thead>
+        <tbody>
+          <tr >
+
+            <td> {{temps.id}} </td>
+            <td> {{temps.template_key}} </td>
+            <td> {{temps.html_template}} </td>
+
+
+
+            <td>
+               <a href="{% url 'mailapp:update-template' temps.id %}" class="btn btn-lg btn-success">edit</a>
+            </td>
+            <td>
+               <a href="{% url 'mailapp:delete-template' temps.id %}" class="btn btn-lg btn-success">delete</a>
+            </td>
+            <td>
+               <a href="{% url 'mailapp:dynamicmail' temps.id %}" class="btn btn-lg btn-success">Send</a>
+            </td>
+          </tr>
+        </tbody>
+
+
+      </table>
+      {% endfor %}
+
+</div>
+
+{% endblock %}

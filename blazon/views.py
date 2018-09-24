@@ -6,9 +6,13 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.models import User
+from django.forms.models import inlineformset_factory
+from django.core.exceptions import PermissionDenied
 from django.contrib.auth.forms import PasswordChangeForm
-from .forms import ProjectForm, StatusReportForm, UserForm, ClientForm, EmployeeForm
-from .models import Project, StatusReport, Client, Employee, StatusReport, Invoice
+from .forms import ProjectForm, StatusReportForm, UserForm, ClientForm, EmployeeForm, EditUserForm
+from .models import Project, StatusReport, Client, Employee, StatusReport, Invoice, UserProfile
+from django.contrib.auth.decorators import login_required
 
 IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
 
@@ -38,38 +42,35 @@ def create_project(request):
         }
         return render(request, 'blazon/create_project.html', context)
 
+
 def create_clients(request):
-    
-    if not request.user.is_authenticated():       
+
+    if not request.user.is_authenticated():
         return render(request, 'blazon/login.html')
     else:
         form = ClientForm(request.POST or None, request.FILES or None)
         if form.is_valid():
-            client = form.save(commit=False) 
+            client = form.save(commit=False)
             client.save()
             return redirect('/blazon/clients/all')
-        return render(request, 'blazon/create_clients.html', {"form": form,})
+        return render(request, 'blazon/create_clients.html', {"form": form, })
 
 
 def create_employee(request):
-    
-    if not request.user.is_authenticated():       
+
+    if not request.user.is_authenticated():
         return render(request, 'blazon/login.html')
     else:
         form = EmployeeForm(request.POST or None, request.FILES or None)
         if form.is_valid():
-            employee = form.save(commit=False) 
+            employee = form.save(commit=False)
             employee.save()
             return redirect('/blazon/employees/all')
-        return render(request, 'blazon/create_employee.html', {"form": form,})
-    
-   
-    
-     
+        return render(request, 'blazon/create_employee.html', {"form": form, })
 
 
 def create_statusreport(request, project_id):
-    if not request.user.is_authenticated():       
+    if not request.user.is_authenticated():
         return render(request, 'blazon/login.html')
     else:
         form = StatusReportForm(request.POST or None, request.FILES or None)
@@ -86,7 +87,7 @@ def create_statusreport(request, project_id):
                     return render(request, 'blazon/create_statusreport.html', context)
             statusreport = form.save(commit=False)
             statusreport.project = project
-            
+
             statusreport.save()
             return render(request, 'blazon/detail.html', {'project': project})
         context = {
@@ -94,7 +95,7 @@ def create_statusreport(request, project_id):
             'form': form,
         }
         return render(request, 'blazon/create_statusreport.html', context)
-    
+
 
 def delete_project(request, project_id):
     project = Project.objects.get(pk=project_id)
@@ -109,11 +110,13 @@ def delete_statusreport(request, project_id, statusreport_id):
     statusreport.delete()
     return render(request, 'blazon/detail.html', {'project': project})
 
+
 def delete_employee(request, employee_id):
     employee = Employee.objects.get(pk=employee_id)
     employee.delete()
     employees = Employee.objects.all()
     return render(request, 'blazon/employees.html', {'employees': employees})
+
 
 def detail(request, project_id):
     if not request.user.is_authenticated():
@@ -160,10 +163,10 @@ def location(request):
     return render(request, 'blazon/location.html', {
         'ip': geodata['ip'],
         'country': geodata['country_name'],
-        'city' : geodata['region_name'],
+        'city': geodata['region_name'],
         'latitude': geodata['latitude'],
         'longitude': geodata['longitude'],
-        'api_key': 'AIzaSyB4RsrXfB_lwR4L6LiMRQGkpMKQE0SIEro'  
+        'api_key': 'AIzaSyB4RsrXfB_lwR4L6LiMRQGkpMKQE0SIEro'
     })
 
 
@@ -183,7 +186,7 @@ def index(request):
         for project in Project.objects.filter(user=request.user):
             for statusreport in project.statusreport_set.all():
                 statusreport_ids.append(statusreport.pk)
-                users_statusreports = StatusReport.objects.filter(pk__in=statusreport_ids).count()
+                # users_statusreports = StatusReport.objects.filter(pk__in=statusreport_ids).all()
         # all_staturreports = StatusReport.objects.all()
         statusreport_results = StatusReport.objects.all()
         # num_reports = StatusReport.objects.filter(pk__in=statusreport_ids).count()
@@ -201,16 +204,17 @@ def index(request):
             })
         else:
             return render(request, 'blazon/index.html', {'projects': projects,
-                                                        'all_projects': all_projects,
-                                                        'numall_projects': numall_projects, 
-                                                        'clients': clients,
-                                                        'employees': employees,
-                                                        'num_clients': num_clients,
-                                                        'num_employees': num_employees,
-                                                        'num_projects': num_projects,
-                                                        'users_statusreports': users_statusreports,
-                                                        
-                                                        })
+                                                         'all_projects': all_projects,
+                                                         'numall_projects': numall_projects,
+                                                         'clients': clients,
+                                                         'employees': employees,
+                                                         'num_clients': num_clients,
+                                                         'num_employees': num_employees,
+                                                         'num_projects': num_projects,
+                                                         # 'users_statusreports': users_statusreports,
+
+                                                         })
+
 
 def projects(request, filter_by):
     if not request.user.is_authenticated():
@@ -229,7 +233,7 @@ def projects(request, filter_by):
             })
         else:
             return render(request, 'blazon/projects.html', {'allproject': allproject,
-                                                           'projects': projects,})
+                                                            'projects': projects, })
 
 
 def employees(request, filter_by):
@@ -237,7 +241,7 @@ def employees(request, filter_by):
         return render(request, 'blazon/login.html')
     else:
         employees = Employee.objects.all()
-        #['employees'].append(Employee.objects.all()) 
+        # ['employees'].append(Employee.objects.all())
         query = request.GET.get("q")
         if query:
             employees = employees.filter(
@@ -245,10 +249,11 @@ def employees(request, filter_by):
             ).distinct()
             return render(request, 'blazon/employees.html', {
                 'employees': employees,
-                
+
             })
         else:
-            return render(request, 'blazon/employees.html', {'employees': employees,})
+            return render(request, 'blazon/employees.html', {'employees': employees, })
+
 
 def clients(request, filter_by):
     if not request.user.is_authenticated():
@@ -264,7 +269,7 @@ def clients(request, filter_by):
                 'clients': clients,
             })
         else:
-            return render(request, 'blazon/clients.html', {'clients': clients,})
+            return render(request, 'blazon/clients.html', {'clients': clients, })
 
 
 def invoice(request, filter_by):
@@ -283,8 +288,9 @@ def invoice(request, filter_by):
             })
         else:
             return render(request, 'blazon/invoice.html', {'invoice': invoice,
-                                                          'projects':projects           
-                                                          })
+                                                           'projects': projects
+                                                           })
+
 
 def logout_user(request):
     logout(request)
@@ -300,11 +306,14 @@ def login_user(request):
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
+        last_login = request.session.get('social_auth_last_login_backend')
+        print(last_login)
         if user is not None:
             if user.is_active:
                 login(request, user)
-                
-                messages.success(request, 'Your password was successfully updated!')                
+
+                messages.success(
+                    request, 'Your password was successfully updated!')
                 return redirect('blazon:index')
                 # return render(request, 'blazon/index.html', {'projects': projects})
             else:
@@ -333,15 +342,15 @@ def register(request):
     }
     return render(request, 'blazon/register.html', context)
 
-        
-    
+
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)  # Important!
-            messages.success(request, 'Your password was successfully updated!')
+            messages.success(
+                request, 'Your password was successfully updated!')
             return redirect('blazon:login_user')
         else:
             messages.error(request, 'Please correct the error below.')
@@ -361,15 +370,75 @@ def statusreports(request, filter_by):
             for project in Project.objects.filter(user=request.user):
                 for statusreport in project.statusreport_set.all():
                     statusreport_ids.append(statusreport.pk)
-            users_statusreports = StatusReport.objects.filter(pk__in=statusreport_ids)
+            users_statusreports = StatusReport.objects.filter(
+                pk__in=statusreport_ids)
             if filter_by == 'favorites':
-                users_statusreports = users_statusreports.filter(is_favorite=True)
+                users_statusreports = users_statusreports.filter(
+                    is_favorite=True)
         except Project.DoesNotExist:
             users_statusreports = []
         return render(request, 'blazon/statusreports.html', {
             'statusreport_list': users_statusreports,
             'filter_by': filter_by,
         })
-from django.shortcuts import render
 
-# Create your views here.
+# @login_required()
+
+
+def userprofile(request, pk=None):
+    if not request.user.is_authenticated():
+        return render(request, 'blazon/login.html')
+    else:
+        if pk:
+
+            user = User.objects.get(pk=pk)
+        else:
+            user = request.user
+        print(request.user.id)
+
+        args = {'user': user}
+        return render(request, 'blazon/userprofile.html', args)
+
+
+# def create_userprofile(request):
+#     if request.method == 'POST':
+#         form = EditProfileForm(request.POST, instance=request.user)
+        
+#         if form.is_valid():
+#             form.save()
+#             return redirect('blazon:userprofile')
+#         else:
+#             messages.error(request, 'Please fill the form again')
+#     else:
+#         form = EditProfileForm(instance=request.user)
+#         args = {'form': form}
+#         return render(request, 'blazon/create_userprofile.html', args)
+
+def create_userprofile(request, pk):
+    user = User.objects.get(pk=pk)
+    user_form = EditUserForm(instance=user)
+
+    ProfileInlineFormset = inlineformset_factory(User, UserProfile, fields=('website', 'bio', 'phone', 'photo', 'city', 'country', 'organization'))
+    formset = ProfileInlineFormset(instance=user)
+
+    if request.user.is_authenticated() and request.user.id == user.id:
+        if request.method == "POST":
+            user_form = EditUserForm(request.POST, request.FILES, instance=user)
+            formset = ProfileInlineFormset(request.POST, request.FILES, instance=user)
+
+            if user_form.is_valid():
+                created_user = user_form.save(commit=False)
+                formset = ProfileInlineFormset(request.POST, request.FILES, instance=created_user)
+
+                if formset.is_valid():
+                    created_user.save()
+                    formset.save()
+                    return redirect('blazon:userprofile')
+
+        return render(request, "blazon/create_userprofile.html", {
+            "noodle": pk,
+            "noodle_form": user_form,
+            "formset": formset,
+        })
+    else:
+        raise PermissionDenied

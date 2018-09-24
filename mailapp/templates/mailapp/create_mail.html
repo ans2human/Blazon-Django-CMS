@@ -1,0 +1,65 @@
+{% extends 'blazon/base.html' %}
+
+{% block body %}
+
+<style>
+    input[type=text], select, textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        margin-top: 6px;
+        margin-bottom: 16px;
+        resize: vertical;
+    }
+    
+    input[type=submit] {
+        background-color: #4CAF50;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    input[type=submit]:hover {
+        background-color: #45a049;
+    }
+    
+    .mailapp {
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 20px;
+    }
+    </style>
+
+
+
+<div class="page-content">
+
+
+    <div class="mailapp">
+        <form method="post" novalidate>
+          <label for="fname">From :</label>
+          <input type="text" id="fname" name="from_email" value={{ user.email }} placeholder="Your name..">
+      
+          <label for="lname">TO :</label>
+          <input type="text" id="lname" name="to" value={{ to }} placeholder="Your last name..">
+
+          <label for="lname">Subject :</label>
+          <input type="text" id="lname" name="subject" value={{ subject }} placeholder="Your last name..">
+      
+            
+          <label for="message">Body :</label>
+          <textarea id="message" name="content" value={{ content }} placeholder="Write something.." style="height:200px"></textarea>
+      
+          <a href="{% url 'mailapp:dynamicmail' %}" class="btn btn-lg btn-success" type="submit">send</a>
+        </form>
+      </div>
+
+</div>
+
+{% endblock %}
+
+ 

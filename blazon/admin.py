@@ -11,6 +11,7 @@ from .models import StatusReport
 from .models import DevSkill
 from .models import ProjectTeam
 from .models import Invoice
+from .models import UserProfile
 
 
 class TechnologiesAdmin(admin.ModelAdmin):
@@ -30,6 +31,6 @@ admin.site.register(DevSkill)
 admin.site.register(StatusReport)
 admin.site.register(ProjectTeam)
 admin.site.register(Invoice)
-
+admin.site.register(UserProfile)
 
 

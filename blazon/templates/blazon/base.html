@@ -36,7 +36,7 @@
 <link href="{% static 'blazon/js/' %}admin/layout/css/themes/default.css" rel="stylesheet" type="text/css" id="style_color"/>
 <link href="{% static 'blazon/js/' %}admin/layout/css/custom.css" rel="stylesheet" type="text/css"/>
 <!-- END THEME STYLES -->
-<link rel="shortcut icon" href="favicon.ico"/>
+<link rel="shortcut icon" href="../../static/blazon/images/favicon.ico"/>
 </head>
 
 <!-- BEGIN BODY -->
@@ -58,7 +58,7 @@
     <!-- <div class="page-logo"> <a href="index.html"><h3>CRM83</h3>  <img src="#" alt="logo" class="logo-default"/></a> -->
       <div class="page-logo">
         <a href="{% url 'blazon:index' %}">
-          <img src="{% static 'blazon/images/' %}lo_go.png"  style="height: 50px;
+          <img src="{% static 'blazon/images/' %}favicon.ico"  style="padding-top: 8px; height: 40px;
           margin: -3px;
           margin-left: -10px;"
            alt="logo" class="logo-default"/>
@@ -79,8 +79,8 @@
         <!-- BEGIN USER LOGIN DROPDOWN -->
         <li class="dropdown dropdown-user"> <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> <img alt="" class="img-circle" src="{% static 'blazon/js/' %}admin/layout/img/avatar3_small.jpg"/> <span class="username"> {{ user.username }} </span> <i class="fa fa-angle-down"></i> </a>
           <ul class="dropdown-menu">
-            <li> <a href="./"> <i class="icon-user"></i> My Profile </a> </li>
-            <li> <a href="page_calendar.html"> <i class="icon-calendar"></i> My Calendar </a> </li>
+            <li> <a href="{% url 'blazon:userprofile' %}"> <i class="icon-user"></i> My Profile </a> </li>
+            <li> <a href="/admin""> <i class="icon-calendar"></i> My Calendar </a> </li>
             <li> <a href="inbox.html"> <i class="icon-envelope-open"></i> My Inbox <span class="badge badge-danger"> 3 </span> </a> </li>
             <li> <a href="#"> <i class="icon-rocket"></i> My Tasks <span class="badge badge-success"> 7 </span> </a> </li>
             <li class="divider"> </li>
@@ -166,7 +166,7 @@
         <li> <a href="javascript:;"> <i class="icon-envelope-open"></i> <span class="title">Invoicing</span> <span class="arrow "></span> </a>
           <ul class="sub-menu">
             <li> <a href="{% url 'blazon:invoice' 'all' %}"> Invoice</a> </li>
-            <li> <a href="email_system.html"> Send Email</a> </li>
+            <li> <a href="{% url 'mailapp:index' %}"> Send Email</a> </li>
           </ul>
         </li>
        

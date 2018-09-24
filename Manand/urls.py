@@ -12,7 +12,9 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^blazon/', include('blazon.urls')),
     url(r'^', include('blazon.urls')),
-    url(r'^blazon/', include(project_resource.urls)),
+    url(r'^mailapp/', include('mailapp.urls')),
+    url(r'^blazona/', include(project_resource.urls)),
+    url(r'^auth/', include('social_django.urls', namespace='social')),  # <- Here
 
 ]
 
