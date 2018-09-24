@@ -403,7 +403,7 @@ def userprofile(request, pk=None):
 # def create_userprofile(request):
 #     if request.method == 'POST':
 #         form = EditProfileForm(request.POST, instance=request.user)
-        
+
 #         if form.is_valid():
 #             form.save()
 #             return redirect('blazon:userprofile')
@@ -418,17 +418,21 @@ def create_userprofile(request, pk):
     user = User.objects.get(pk=pk)
     user_form = EditUserForm(instance=user)
 
-    ProfileInlineFormset = inlineformset_factory(User, UserProfile, fields=('website', 'bio', 'phone', 'photo', 'city', 'country', 'organization'))
+    ProfileInlineFormset = inlineformset_factory(User, UserProfile, fields=(
+        'website', 'bio', 'phone', 'photo', 'city', 'country', 'organization'))
     formset = ProfileInlineFormset(instance=user)
 
     if request.user.is_authenticated() and request.user.id == user.id:
         if request.method == "POST":
-            user_form = EditUserForm(request.POST, request.FILES, instance=user)
-            formset = ProfileInlineFormset(request.POST, request.FILES, instance=user)
+            user_form = EditUserForm(
+                request.POST, request.FILES, instance=user)
+            formset = ProfileInlineFormset(
+                request.POST, request.FILES, instance=user)
 
             if user_form.is_valid():
                 created_user = user_form.save(commit=False)
-                formset = ProfileInlineFormset(request.POST, request.FILES, instance=created_user)
+                formset = ProfileInlineFormset(
+                    request.POST, request.FILES, instance=created_user)
 
                 if formset.is_valid():
                     created_user.save()
@@ -442,3 +446,10 @@ def create_userprofile(request, pk):
         })
     else:
         raise PermissionDenied
+
+
+def loginTempView(request):
+
+    template_name = 'blazon/Bharti.html'
+
+    return render(request, template_name)

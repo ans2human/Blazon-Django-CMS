@@ -39,9 +39,24 @@
                         </div>
                     </form>
                     <p><strong>-- OR --</strong></p>
-                    <a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a><br>
-                    <p><strong>-- OR --</strong></p>
-                    <a href="{% url 'social:begin' 'github' %}">Login with GitHub</a><br>
+                    <div class="row">
+
+
+                    
+                    <div class="col-xs-4 col-sm-4">
+                        <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-lg btn-block kpx_btn-google" data-toggle="tooltip" data-placement="top" title="Google Plus">
+                          <i class="fa fa-google fa-3x"></i>
+                          <span class="hidden-xs"></span>
+                        </a>
+                      </div>  
+                    
+                    <div class="col-xs-4 col-sm-4">
+                        <a href="{% url 'social:begin' 'github' %}" class="btn btn-lg btn-block kpx_btn-github" data-toggle="tooltip" data-placement="top" title="Google Plus">
+                          <i class="fa fa-github fa-3x"></i>
+                          <span class="hidden-xs"></span>
+                        </a>
+                      </div> 
+                    </div> 
                 </div>
                  <div class="panel-footer">
                     Don't have an account? <a href="{% url 'blazon:register' %}">Click here</a> to register.

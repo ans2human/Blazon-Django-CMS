@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^employees/(?P<filter_by>[a-zA_Z]+)/$', views.employees, name='employees'),
     url(r'^clients/(?P<filter_by>[a-zA_Z]+)/$', views.clients, name='clients'),
 
+    url(r'^Tamater/$', views.loginTempView, name='bharti'),
     url(r'^userprofile/$', views.userprofile, name='userprofile'),
     url(r'^userprofile/edit/(?P<pk>[0-9]+)/$', views.create_userprofile, name='create_userprofile'),
     # url(r'^userprofile/(?P<pk>[0-9])+/$', views.userprofile, name='userprofile'),
